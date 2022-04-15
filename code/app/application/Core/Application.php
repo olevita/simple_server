@@ -20,8 +20,7 @@ class Application
         $path = "\\Controller\\$path";
         $result = Loader::loadClass($path, 'execute');
         if (!$result) {
-            http_response_code(404);
-            include ROOT_PATH . "pub/404.html";
+            include ROOT_PATH . "pub/errors/404.html";
             return;
         }
     }
