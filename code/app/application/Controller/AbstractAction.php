@@ -2,6 +2,9 @@
 
 namespace Controller;
 
+use Core\Loader;
+use Model\BlockInterface;
+
 abstract class AbstractAction implements ActionInterface
 {
     protected string $template;
@@ -15,7 +18,9 @@ abstract class AbstractAction implements ActionInterface
         } else {
             $templateClass = $this->template;
         }
-        \Core\Loader::loadClass("\\Model\\$templateClass", "render");
+        /** @var BlockInterface $model */
+        $model = Loader::loadClass("\\Model\\$templateClass");
+        $model->render();
         return true;
     }
 }

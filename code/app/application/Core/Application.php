@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Controller\ActionInterface;
 use Core\Request\Parser;
 
 class Application
@@ -18,7 +19,9 @@ class Application
             $path = implode("\\", $path);
         }
         $path = "\\Controller\\$path";
-        $result = Loader::loadClass($path, 'execute');
+        /** @var ActionInterface $action */
+        $action = Loader::loadClass($path);
+        $result = $action->execute();
         if (!$result) {
             include ROOT_PATH . "pub/errors/404.html";
             return;

@@ -9,10 +9,19 @@
 <div class="log-form">
     <h2>Register an account</h2>
     <form action="/save" method="post">
-        <input name="login" pattern="[A-Za-z0-9]+" placeholder="username"
-               required title="username" type="text"/>
-        <input minlength="8" name="password" pattern="[A-Za-z0-9]+"
-               placeholder="password" required title="username" type="password"/>
+        <input name="login"
+               pattern="[A-Za-z0-9]+"
+               placeholder="username"
+               required
+               title="username"
+               type="text"/>
+        <input minlength="8"
+               name="password"
+               pattern="[A-Za-z0-9]+"
+               placeholder="password"
+               required
+               title="username"
+               type="password"/>
         <button class="btn" type="submit">Register</button>
         <button class="btn" formaction="/" formnovalidate>Home</button>
     </form>

@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+define('ROOT_PATH', dirname(__DIR__) . '/');
+include  ROOT_PATH . "app/code/autoload.php";
+
+if (PHP_SAPI !== 'cli') {
+    echo 'bin/console must be run as a CLI application';
+    exit(1);
+}
+
+/** @var \Core\Console\Parser $parser */
+$parser = \Core\Loader::loadClass(\Core\Console\Parser::class);
+$parser->parse($argv, $argc);

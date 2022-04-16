@@ -4,13 +4,16 @@ namespace Core;
 
 class Loader
 {
-    public static function loadClass($class, string $method): ?string
+    public static function loadClass($class)
     {
         if (!class_exists($class)) {
             return null;
         }
-        $instance = new $class();
-        return call_user_func([$instance, $method]);
+        $instance = self::getInstance($class);
+        if (!$instance) {
+            throw new \Exception("Can't create class instance");
+        }
+        return array_shift($instance);
     }
 
     public static function getInstance(string $class): array
@@ -28,6 +31,8 @@ class Loader
                 }
             }
             $args[] = new $class(...$subParams);
+        } else {
+            $args[] = new $class();
         }
         return $args;
     }

@@ -15,14 +15,7 @@ class Mysql
 
     public function insert(string $table, array $data): bool|int
     {
-        $connection = new \PDO(
-            "mysql:host={$this->connection->getHost()}" .
-            ";port={$this->connection->getPort()}" .
-            ";dbname={$this->connection->getDbname()}",
-            $this->connection->getUsername(),
-            $this->connection->getPassword()
-        );
-        $connection->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
+        $connection = $this->getConnection();
         $connection->beginTransaction();
 
         $bind = array_values($data);
@@ -41,6 +34,16 @@ class Mysql
 
     public function select(string $table, string $cond)
     {
+        $connection = $this->getConnection();
+
+        $sql = "SELECT * FROM $table WHERE $cond;";
+
+        $stmt = $connection->query($sql);
+        return $stmt->fetchAll();
+    }
+
+    public function getConnection(): \PDO
+    {
         $connection = new \PDO(
             "mysql:host={$this->connection->getHost()}" .
             ";port={$this->connection->getPort()}" .
@@ -49,10 +52,6 @@ class Mysql
             $this->connection->getPassword()
         );
         $connection->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
-
-        $sql = "SELECT * FROM $table WHERE $cond;";
-
-        $stmt = $connection->query($sql);
-        return $stmt->fetch();
+        return $connection;
     }
 }
