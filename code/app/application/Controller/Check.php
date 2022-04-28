@@ -6,18 +6,22 @@ use Core\Connection\Connection;
 use Core\DB\Mysql;
 use Core\Hash;
 use Core\Request\Parser;
+use Core\Response;
 
 class Check extends AbstractAction
 {
     protected string $template = 'SuccessLogin';
     private Mysql $mysql;
 
-    public function __construct(Mysql $mysql)
-    {
+    public function __construct(
+        Response $response,
+        Mysql $mysql
+    ) {
+        parent::__construct($response);
         $this->mysql = $mysql;
     }
 
-    public function execute(): ?bool
+    public function execute(): Response
     {
         $postParams = Parser::getRequest()->getPostParams();
         $login = $postParams['login'];
@@ -26,7 +30,6 @@ class Check extends AbstractAction
         if (!$result) {
             $this->template = 'FailedLogin';
         }
-        parent::execute();
-        return true;
+        return parent::execute();
     }
 }

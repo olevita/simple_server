@@ -3,6 +3,7 @@
 namespace Core;
 
 use Controller\ActionInterface;
+use Core\DiContainer\Container;
 use Core\Request\Parser;
 
 class Application
@@ -10,6 +11,7 @@ class Application
     public function run()
     {
         $request = Parser::getRequest();
+        $container = new Container();
         $path = trim(parse_url($request->getUrl(), PHP_URL_PATH), "/");
         if ($path == '') {
             $path = "Home";
@@ -20,11 +22,12 @@ class Application
         }
         $path = "\\Controller\\$path";
         /** @var ActionInterface $action */
-        $action = Loader::loadClass($path);
-        $result = $action->execute();
-        if (!$result) {
+        $action = $container->get($path);
+        if (!$action) {
             include ROOT_PATH . "pub/errors/404.html";
             return;
         }
+        $response = $action->execute();
+        $response->sendResponse();
     }
 }

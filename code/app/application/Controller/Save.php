@@ -6,6 +6,7 @@ use Core\Connection\Connection;
 use Core\DB\Mysql;
 use Core\Hash;
 use Core\Request\Parser;
+use Core\Response;
 use PDOException;
 
 class Save extends AbstractAction
@@ -13,11 +14,15 @@ class Save extends AbstractAction
     private Mysql $mysql;
     protected string $template = 'SuccessRegister';
 
-    public function __construct(Mysql $mysql) {
+    public function __construct(
+        Response $response,
+        Mysql $mysql
+    ) {
+        parent::__construct($response);
         $this->mysql = $mysql;
     }
 
-    public function execute(): ?bool
+    public function execute(): Response
     {
         $postParams = Parser::getRequest()->getPostParams();
         $data = [
@@ -25,11 +30,10 @@ class Save extends AbstractAction
             'password' => Hash::encode($postParams['password'])
         ];
         try {
-            $result = $this->mysql->insert('user', $data);
+            $this->mysql->insert('user', $data);
         } catch (PDOException) {
             $this->template = 'DuplicateEntry';
         }
-        parent::execute();
-        return true;
+        return parent::execute();
     }
 }

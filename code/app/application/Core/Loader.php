@@ -36,9 +36,4 @@ class Loader
         }
         return $args;
     }
-
-    public static function loadTemplate(string $path)
-    {
-        include ROOT_PATH . "app/application/Template/$path.html";
-    }
 }

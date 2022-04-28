@@ -2,7 +2,9 @@
 
 namespace Controller;
 
+use Core\Response;
+
 interface ActionInterface
 {
-    public function execute(): ?bool;
+    public function execute(): Response;
 }

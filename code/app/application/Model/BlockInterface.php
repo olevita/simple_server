@@ -4,5 +4,5 @@ namespace Model;
 
 interface BlockInterface
 {
-    public function render();
+    public function render(): string;
 }
